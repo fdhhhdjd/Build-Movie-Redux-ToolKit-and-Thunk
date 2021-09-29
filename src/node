@@ -1,3 +1,6 @@
 npm install --save node-sass
 npm install node-sass
 npm run start
+
+//prev next 🍎 npm install react-slick --save 
+// -> add CDN 

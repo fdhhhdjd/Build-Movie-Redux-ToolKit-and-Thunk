@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.scss";
-import { Switch, BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {
   Footer,
   Header,
@@ -11,15 +11,17 @@ import {
 function App() {
   return (
     <div className="app">
-      <BrowserRouter>
+      <Router>
         <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/movie/:imdbID" component={MovieDetail} />
-          <Route exact path="*" component={PageNotFound} />
-        </Switch>
+        <div className="container">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/movie/:imdbID" component={MovieDetail} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </div>
         <Footer />
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

@@ -3,31 +3,29 @@ import { useSelector } from "react-redux";
 import { getAllMovies, getAllShows } from "../../redux/MovieSlice";
 import MovieCart from "../MovieCart/MovieCart";
 import "./MovieListing.scss";
+import Slider from "react-slick";
+import { Settings } from "../../common/Seting";
 const MovieListing = () => {
   const movies = useSelector(getAllMovies);
   const shows = useSelector(getAllShows);
   console.log(movies);
   let renderMovies,
     renderShows = "";
+
   renderMovies =
     movies.Response === "True" ? (
-      <>
-        {movies.Search.map((item, index) => {
-          return <MovieCart key={index} data={item} />;
-        })}
-      </>
+      movies.Search.map((movie, index) => (
+        <MovieCart key={index} data={movie} />
+      ))
     ) : (
-      <>
-        <div className="movie-error">
-          <h2>{movies.Error}</h2>
-        </div>
-      </>
+      <div className="movies-error">
+        <h3>{movies.Error}</h3>
+      </div>
     );
-  //!show movie
 
   renderShows =
     shows.Response === "True" ? (
-      shows.Search.map((item, index) => <MovieCart key={index} data={item} />)
+      shows.Search.map((movie, index) => <MovieCart key={index} data={movie} />)
     ) : (
       <div className="shows-error">
         <h3>{shows.Error}</h3>
@@ -36,15 +34,18 @@ const MovieListing = () => {
   return (
     <div className="movie-wrapper">
       <div className="movie-list">
-        <h2>Movie</h2>
-        <div className="movie-container">{renderMovies}</div>
+        <h2>Movies</h2>
+        <div className="movie-container">
+          <Slider {...Settings}>{renderMovies}</Slider>
+        </div>
       </div>
       <div className="show-list">
-        <h2>Friend</h2>
-        <div className="movie-container">{renderShows}</div>
+        <h2>Shows</h2>
+        <div className="movie-container">
+          <Slider {...Settings}>{renderShows}</Slider>
+        </div>
       </div>
     </div>
   );
 };
-
 export default MovieListing;
