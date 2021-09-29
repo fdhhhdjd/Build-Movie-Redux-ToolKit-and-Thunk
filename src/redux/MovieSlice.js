@@ -2,16 +2,36 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { APIKey } from "../common/Api/MovieApi";
 import movieApi from "../common/Api/MovieApiKey";
 //!thunk
-export const GetApi = createAsyncThunk("movie/GetApi ", async () => {
+export const GetApiHarry = createAsyncThunk("movies/GetApiHarry ", async () => {
   const movieText = "Harry";
   const response = await movieApi.get(
     `?apiKey=${APIKey}&s=${movieText}&type=movie`
   );
   return response.data;
 });
+export const GetShowListing = createAsyncThunk(
+  "movies/GetShowListing",
+  async () => {
+    const seriesText = "Friends";
+    const response = await movieApi.get(
+      `?apiKey=${APIKey}&s=${seriesText}&type=series`
+    );
+    return response.data;
+  }
+);
+//!id
+export const GetShowDetail = createAsyncThunk(
+  "movies/fetchAsyncMovieOrShowDetail",
+  async (id) => {
+    const response = await movieApi.get(`?apiKey=${APIKey}&i=${id}&Plot=full`);
+    return response.data;
+  }
+);
 
 const initialState = {
   movies: {},
+  shows: {},
+  selectMovieOrShow: {},
 };
 const movieSlice = createSlice({
   name: "movies",
@@ -20,21 +40,36 @@ const movieSlice = createSlice({
     addMovie: (state, { payload }) => {
       state.movies = payload;
     },
+    removeSelectedMovieOrShow: (state) => {
+      state.selectMovieOrShow = {};
+    },
   },
   extraReducers: {
-    [GetApi.pending]: (state, action) => {
+    [GetApiHarry.pending]: (state, action) => {
       console.log("Fetching Api from backend...");
     },
-    [GetApi.fulfilled]: (state, action) => {
+    [GetApiHarry.fulfilled]: (state, action) => {
       console.log("Done");
       return { ...state, movies: action.payload };
     },
-    [GetApi.rejected]: (state, action) => {
-      console.log("Faill to get Movie...!");
+    [GetApiHarry.rejected]: (state, action) => {
+      console.log("Fall to get Movie...!");
+    },
+    //!Api Friend
+    [GetShowListing.fulfilled]: (state, action) => {
+      console.log("Done");
+      return { ...state, shows: action.payload };
+    },
+    //!id
+    [GetShowDetail.fulfilled]: (state, action) => {
+      console.log("Done");
+      return { ...state, selectMovieOrShow: action.payload };
     },
   },
 });
 const moviesReducer = movieSlice.reducer;
-export const { addMovie } = movieSlice.actions;
+export const { addMovie, removeSelectedMovieOrShow } = movieSlice.actions;
 export const getAllMovies = (state) => state.movies.movies;
+export const getAllShows = (state) => state.movies.shows;
+export const getAllDetail = (state) => state.movies.selectMovieOrShow;
 export default moviesReducer;

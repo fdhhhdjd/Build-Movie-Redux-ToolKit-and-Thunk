@@ -15,7 +15,7 @@ function App() {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/movie:imdID" component={MovieDetail} />
+          <Route path="/movie/:imdbID" component={MovieDetail} />
           <Route exact path="*" component={PageNotFound} />
         </Switch>
         <Footer />
