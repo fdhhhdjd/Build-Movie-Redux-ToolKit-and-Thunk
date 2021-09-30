@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <>
       <div className="header">
-        <div className="logo">Movie Redux Toolkit</div>
+        <div className="logo"> Web Movie Redux Toolkit</div>
         <div className="search-bar">
           <form onSubmit={submitHandler}>
             <input
